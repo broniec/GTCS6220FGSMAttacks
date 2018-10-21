@@ -36,6 +36,7 @@ class FastGradientSignUntargeted():
         ce_loss = nn.CrossEntropyLoss()
         # Process image
         processed_image = preprocess_image(original_image)
+        original_image = preprocess_image(original_image)
         test_out = self.model(processed_image)
         _,im_label = test_out.data.max(1)
         # print("Test Prediction: ", test_prediction.numpy()[0])
@@ -90,7 +91,7 @@ class FastGradientSignUntargeted():
                 break
 
         # Create the image for noise as: Original image - generated image
-        noise_image = original_image - recreated_image
+        noise_image = recreate_image(original_image) - recreated_image
         cv2.imwrite('../generated/untargeted_adv_noise_from_' + str(im_label) + '_to_' +
             str(confirmation_prediction) + '.jpg', noise_image)
         # Write image
@@ -101,7 +102,7 @@ class FastGradientSignUntargeted():
 
 
 if __name__ == '__main__':
-    target_example = 4  
+    target_example = 5
     (original_image, prep_img, target_class, _, pretrained_model) =\
         get_params(target_example)
 

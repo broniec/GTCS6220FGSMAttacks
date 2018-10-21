@@ -90,7 +90,8 @@ def get_params(example_index):
                     ['../input_images/eel.JPEG', 390],
                     ['../input_images/bird.JPEG', 13],
                     ['../input_images/snake.jpg', 13],
-                    ['../input_images/itlgreyhound.jpg', 13]]
+                    ['../input_images/itlgreyhound.jpg', 13],
+                    ['../input_images/hammerhead.JPEG', 13]]
     selected_example = example_index
     img_path = example_list[selected_example][0]
     target_class = example_list[selected_example][1]
