@@ -30,7 +30,9 @@ def preprocess_image(cv2im, resize_im=True):
         cv2im = cv2.resize(cv2im, (224, 224))
     im_as_arr = np.float32(cv2im)
     im_as_arr = np.ascontiguousarray(im_as_arr[..., ::-1])
+    print (im_as_arr.shape)
     im_as_arr = im_as_arr.transpose(2, 0, 1)  # Convert array to D,W,H
+    print(im_as_arr.shape)
     # Normalize the channels
     for channel, _ in enumerate(im_as_arr):
         im_as_arr[channel] /= 255
@@ -55,6 +57,7 @@ def recreate_image(im_as_var):
     returns:
         recreated_im (numpy arr): Recreated image in array
     """
+
     reverse_mean = [-0.485, -0.456, -0.406]
     reverse_std = [1/0.229, 1/0.224, 1/0.225]
     recreated_im = copy.copy(im_as_var.data.numpy()[0])
@@ -100,6 +103,7 @@ def get_params(example_index):
     original_image = cv2.imread(img_path, 1)
     # Process image
     prep_img = preprocess_image(original_image)
+
     # Define model
     pretrained_model = models.alexnet(pretrained=True)
     return (original_image,
