@@ -6,6 +6,7 @@ import torch
 from torch.autograd import Variable
 from torchvision import models
 
+
 def retreive_semeion_data(file="../data/semeion.data", generate_images=False):
     orig_data = np.loadtxt(file)
     data = (orig_data[:, :256] * 255).astype('uint8')
@@ -30,6 +31,7 @@ def retreive_semeion_data(file="../data/semeion.data", generate_images=False):
             id += 1
 
     return data, labels
+
 
 def preprocess_image(cv2im, resize_im=True):
     """
@@ -99,13 +101,13 @@ def recreate_image(im_as_var):
     return recreated_im
 
 
-
-
-
 # FOR TESTING PURPOSES
 # ---------------------
 
-# retreive_semeion_data()
+# data, labels = retreive_semeion_data()
+# print(data[0])
+# print(labels[0])
+# print('---')
 # f = cv2.imread("../data/images/0_0.jpg", 1)
 # var = preprocess_image(f)
 # recreated = recreate_image(var)
