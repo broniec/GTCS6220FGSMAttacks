@@ -2,8 +2,10 @@ import semeion as s
 import torch
 import sys
 import fast_gradient_sign_untargeted as fgsu
+import targeted_attack
 import misc_functions_2 as mf
 from misc_functions import preprocess_image, recreate_image, get_params
+import helper_functions as hf
 
 # batch_sizes = [1, 2, 4, 8, 16, 32, 64]
 learning_rates = [0.02, 0.03, 0.05, 0.07, 0.09]
@@ -37,9 +39,39 @@ def run_untargeted_experiment():
         u_out.write("{},{},{},{},{}\n".format(i,target_class,pred,iter,conf))
     u_out.close()
 
-if __name__ == '__main__':
 
-    if sys.argv[1] == "-u":
+def run_targeted_experiment(size):
+    u_out = open("targeted_experiment_out.txt", "w")
+    u_out.write("img,original_class,predicted_class,num_iterations,confidence\n")
+    data = mf.retreive_semeion_data()
+    model = hf.get_model()
+    fgst = targeted_attack.FastGradientSignTargeted(model, 0.02)
+
+    if size == -1:
+        size = len(data[0])
+
+    for i in range(size):
+        # o_image, o_class = hf.load_image(i)
+        # t_class = (o_class + 1) % 10
+        # p_class, iteration, confidence = fgst.generate(o_image, o_class, t_class)
+        # u_out.write("{},{},{},{},{}\n".format(i, t_class, p_class, iteration, confidence))
+        for j in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
+            o_image, o_class = hf.load_image(i)
+            t_class = j
+            p_class, iteration, confidence = fgst.generate(o_image, o_class, j)
+            u_out.write("{},{},{},{},{}\n".format(i, j, p_class, iteration, confidence))
+    u_out.close()
+
+
+if __name__ == '__main__':
+    # mode = sys.argv[1]
+    mode = '-t'
+    if mode == "-u":
         run_untargeted_experiment()
+    elif mode == "-t":
+        size = -1
+        if len(sys.argv) > 2:
+            size = int(sys.argv[2])
+        run_targeted_experiment(size)
     else:
         run_experiment()
