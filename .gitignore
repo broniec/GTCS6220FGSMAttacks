@@ -111,3 +111,5 @@ src/data/raw/t10k-images-idx3-ubyte
 src/data/raw/t10k-labels-idx1-ubyte
 src/data/raw/train-images-idx3-ubyte
 src/data/raw/train-labels-idx1-ubyte
+src/results - backup.txt
+src/results2.txt
