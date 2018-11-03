@@ -169,8 +169,8 @@ def main():
     for epoch in range(num_epochs):
         train(model, train_loader, optimizer, epoch)
         test(model, test_loader)
+    return model
 
 
 if __name__ == '__main__':
     main()
-

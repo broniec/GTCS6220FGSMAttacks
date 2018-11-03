@@ -6,12 +6,9 @@ Created on Fri Dec 15 19:57:34 2017
 import os
 import numpy as np
 import cv2
-
 import torch
 from torch import nn
 from torch.autograd import Variable
-# from torch.autograd.gradcheck import zero_gradients  # See processed_image.grad = None
-
 from misc_functions import preprocess_image, recreate_image, get_params
 
 
@@ -30,14 +27,17 @@ class FastGradientSignUntargeted():
             os.makedirs('../generated')
 
     def generate(self, original_image, im_label):
-        # I honestly dont know a better way to create a variable with specific value
-        
-        # Define loss functions
+
+        temp_preview = np.resize(original_image, (16, 16, 1))
+        temp_preview = temp_preview * 255
+        temp_preview = np.dstack((temp_preview, temp_preview, temp_preview))
+        cv2.imwrite('preview_image.bmp', temp_preview)
+
         ce_loss = nn.CrossEntropyLoss()
         # Process image
         processed_image = preprocess_image(original_image)
         original_image = preprocess_image(original_image)
-        test_out = self.model(processed_image)
+        test_out = self.model(original_image)
         _,im_label = test_out.data.max(1)
         # print("Test Prediction: ", test_prediction.numpy()[0])
         im_label = im_label.numpy()[0]
@@ -92,12 +92,17 @@ class FastGradientSignUntargeted():
 
         # Create the image for noise as: Original image - generated image
         noise_image = recreate_image(original_image) - recreated_image
-
+        noise_image = np.resize(noise_image, (16, 16, 1))
+        noise_image = noise_image * 255
+        noise_image = np.dstack((noise_image, noise_image, noise_image))
+        recreated_image = np.resize(recreated_image, (16, 16, 1))
+        recreated_image = recreated_image * 255
+        recreated_image = np.dstack((recreated_image, recreated_image, recreated_image))
         cv2.imwrite('../generated/untargeted_adv_noise_from_' + str(im_label) + '_to_' +
-            str(confirmation_prediction) + '.jpg', noise_image)
+            str(confirmation_prediction) + '.bmp', noise_image)
         # Write image
         cv2.imwrite('../generated/untargeted_adv_img_from_' + str(im_label) + '_to_' +
-            str(confirmation_prediction) + '.jpg', recreated_image)
+            str(confirmation_prediction) + '.bmp', recreated_image)
 
         return 1
 
@@ -107,5 +112,5 @@ if __name__ == '__main__':
     (original_image, prep_img, target_class, _, pretrained_model) =\
         get_params(target_example)
 
-    FGS_untargeted = FastGradientSignUntargeted(pretrained_model, 0.01)
+    FGS_untargeted = FastGradientSignUntargeted(pretrained_model, 0.02)
     FGS_untargeted.generate(original_image, target_class)

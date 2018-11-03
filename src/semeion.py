@@ -3,18 +3,18 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torchvision import datasets, transforms
-import misc_functions as mf
+import misc_functions_2 as mf
 import numpy
 
+
 class Net(nn.Module):
-    def __init__(self):
+    def __init__(self, linear_layer=15):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
         self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
         self.conv2_drop = nn.Dropout2d()
-        self.fc1 = nn.Linear(20, 15)
-        self.fc2 = nn.Linear(15, 10)
+        self.fc1 = nn.Linear(20, linear_layer)
+        self.fc2 = nn.Linear(linear_layer, 10)
 
     def forward(self, x):
         x = F.relu(F.max_pool2d(self.conv1(x), 2))
@@ -35,13 +35,9 @@ def train(args, model, train_loader, optimizer, epoch):
         loss = F.nll_loss(output, target)
         loss.backward()
         optimizer.step()
-        if batch_idx % args.log_interval == 0:
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(data), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader), loss.item()))
 
 
-def test(args, model, test_loader):
+def test(model, test_loader):
     model.eval()
     test_loss = 0
     correct = 0
@@ -54,21 +50,19 @@ def test(args, model, test_loader):
             correct += pred.eq(target.view_as(pred)).sum().item()
 
     test_loss /= len(test_loader.dataset)
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-        test_loss, correct, len(test_loader.dataset),
-        100. * correct / len(test_loader.dataset)))
+    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(test_loss, correct, len(test_loader.dataset), 100. * correct / len(test_loader.dataset)))
 
 
-def main():
+def run(trogo=64, epochs=300, lr=0.01, linear_layer=15):
     # Training settings
     parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
-    parser.add_argument('--batch-size', type=int, default=32, metavar='N',
+    parser.add_argument('--batch-size', type=int, default=trogo, metavar='N',
                         help='input batch size for training (default: 64)')
     parser.add_argument('--test-batch-size', type=int, default=64, metavar='N',
-                        help='input batch size for testing (default: 1000)')
-    parser.add_argument('--epochs', type=int, default=1000, metavar='N',
-                        help='number of epochs to train (default: 10)')
-    parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
+                        help='input batch size for testing (default: 300)')
+    parser.add_argument('--epochs', type=int, default=epochs, metavar='N',
+                        help='number of epochs to train (default: 300)')
+    parser.add_argument('--lr', type=float, default=lr, metavar='LR',
                         help='learning rate (default: 0.01)')
     parser.add_argument('--seed', type=int, default=1, metavar='S',
                         help='random seed (default: 1)')
@@ -78,18 +72,6 @@ def main():
 
     torch.manual_seed(args.seed)
     numpy.random.seed(args.seed)
-
-    # train_loader = torch.utils.data.DataLoader(
-    #     datasets.MNIST('../data', train=True, download=True,
-    #                    transform=transforms.Compose([
-    #                        transforms.ToTensor()
-    #                    ])),
-    #     batch_size=args.batch_size, shuffle=True)
-    # test_loader = torch.utils.data.DataLoader(
-    #     datasets.MNIST('../data', train=False, transform=transforms.Compose([
-    #                        transforms.ToTensor()
-    #                    ])),
-    #     batch_size=args.test_batch_size, shuffle=True)
 
     data, labels = mf.retreive_semeion_data()
     randomized = numpy.random.permutation(len(labels))
@@ -102,13 +84,14 @@ def main():
     test_set = torch.utils.data.TensorDataset(valid_cube, valid_labels)
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=args.test_batch_size)
 
-    model = Net()
+    model = Net(linear_layer)
     optimizer = optim.SGD(model.parameters(), lr=args.lr)
 
     for epoch in range(1, args.epochs + 1):
         train(args, model, train_loader, optimizer, epoch)
-        test(args, model, test_loader)
+        test(model, test_loader)
+    return model
 
 
 if __name__ == '__main__':
-    main()
+    run()
