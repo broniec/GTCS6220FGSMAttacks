@@ -38,14 +38,18 @@ class FastGradientSignUntargeted():
         processed_image = preprocess_image(original_image)
         original_image = preprocess_image(original_image)
         test_out = self.model(original_image)
-        _,im_label = test_out.data.max(1)
-        # print("Test Prediction: ", test_prediction.numpy()[0])
-        im_label = im_label.numpy()[0]
+        # _,im_label = test_out.data.max(1)
+        # im_label = im_label.numpy()[0]
         print("im_label: ", im_label)
         im_label_as_var = Variable(torch.from_numpy(np.asarray([im_label])))
 
+        confirmation_confidence = -1
+        confirmation_prediction = -1
+        iterations = 0
+
         # Start iteration
-        for i in range(10):
+        for i in range(100):
+            iterations = i
             print('Iteration:', str(i))
             # zero_gradients(x)
             # Zero out previous gradients
@@ -104,7 +108,7 @@ class FastGradientSignUntargeted():
         cv2.imwrite('../generated/untargeted_adv_img_from_' + str(im_label) + '_to_' +
             str(confirmation_prediction) + '.bmp', recreated_image)
 
-        return 1
+        return confirmation_prediction, iterations, confirmation_confidence
 
 
 if __name__ == '__main__':

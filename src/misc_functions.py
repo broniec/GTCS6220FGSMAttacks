@@ -92,12 +92,11 @@ def get_params(example_index):
         file_name_to_export (string): File name to export the visualizations
         pretrained_model(Pytorch model): Model to use for the operations
     """
-    selected_example = example_index
 
     data = mf.retreive_semeion_data()
-    original_image = data[0][1]
-    prep_img = data[0][1]
-    target_class = data[1][0]
+    original_image = data[0][example_index]
+    prep_img = data[0][example_index]
+    target_class = data[1][example_index]
     file_name_to_export = None
 
     # x = recreate_image(im_as_ten = torch.from_numpy(original_image).float())
