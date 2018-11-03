@@ -104,7 +104,7 @@ def get_params(example_index):
 
     # Define model
     # pretrained_model = models.alexnet(pretrained=True)
-    pretrained_model = torch.load('SemeionCNN')
+    pretrained_model = torch.load('SemeionCNN98')
     return (original_image,
             prep_img,
             target_class,
