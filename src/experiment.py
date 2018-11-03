@@ -42,7 +42,7 @@ def run_untargeted_experiment():
 
 def run_targeted_experiment(size):
     u_out = open("targeted_experiment_out.txt", "w")
-    u_out.write("img,original_class,predicted_class,num_iterations,confidence\n")
+    u_out.write("img,original_class,target_class,predicted_class,num_iterations,confidence\n")
     data = mf.retreive_semeion_data()
     model = hf.get_model()
     fgst = targeted_attack.FastGradientSignTargeted(model, 0.02)
@@ -51,21 +51,16 @@ def run_targeted_experiment(size):
         size = len(data[0])
 
     for i in range(size):
-        # o_image, o_class = hf.load_image(i)
-        # t_class = (o_class + 1) % 10
-        # p_class, iteration, confidence = fgst.generate(o_image, o_class, t_class)
-        # u_out.write("{},{},{},{},{}\n".format(i, t_class, p_class, iteration, confidence))
         for j in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
             o_image, o_class = hf.load_image(i)
             t_class = j
             p_class, iteration, confidence = fgst.generate(o_image, o_class, j)
-            u_out.write("{},{},{},{},{}\n".format(i, j, p_class, iteration, confidence))
+            u_out.write("{},{},{},{},{},{}\n".format(i, o_class, t_class, p_class, iteration, confidence))
     u_out.close()
 
 
 if __name__ == '__main__':
-    # mode = sys.argv[1]
-    mode = '-t'
+    mode = sys.argv[1]
     if mode == "-u":
         run_untargeted_experiment()
     elif mode == "-t":
