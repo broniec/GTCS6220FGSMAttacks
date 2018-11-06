@@ -48,30 +48,30 @@ class FastGradientSignTargeted():
                 print('Original image was predicted as:', org_class,
                       'with adversarial noise converted to:', confirmation_prediction,
                       'and predicted with confidence of:', confirmation_confidence)
-                # Create the image for noise as: Original image - generated image
-                noise_image = original_image - recreated_image
+
+                # Uncomment to generate noise upon success
+                # noise_image = original_image - recreated_image
+                # original_image = np.resize(original_image, (16, 16, 1))
+                # original_image *= 255
+                # original_image = np.dstack((original_image, original_image, original_image))
+                # noise_image = np.resize(noise_image, (16, 16, 1))
+                # noise_image *= 255
+                # noise_image = np.dstack((noise_image, noise_image, noise_image))
+                # recreated_image = np.resize(recreated_image, (16, 16, 1))
+                # recreated_image *= 255
+                # recreated_image = np.dstack((recreated_image, recreated_image, recreated_image))
+                #
+                # # orig. image
+                # cv2.imwrite('../generated/targeted/i_' + str(org_class) + '_' +
+                #             str(confirmation_prediction) + '.jpg', original_image)
+                # # final image
+                # cv2.imwrite('../generated/targeted/f_' + str(org_class) + '_' +
+                #             str(confirmation_prediction) + '.jpg', noise_image)
+                # # noise image
+                # cv2.imwrite('../generated/targeted/n_' + str(org_class) + '_' +
+                #             str(confirmation_prediction) + '.jpg', recreated_image)
+
                 return confirmation_prediction, i, confirmation_confidence
-
-        # noise_image = original_image - recreated_image
-        # original_image = np.resize(original_image, (16, 16, 1))
-        # original_image *= 255
-        # original_image = np.dstack((original_image, original_image, original_image))
-        # noise_image = np.resize(noise_image, (16, 16, 1))
-        # noise_image *= 255
-        # noise_image = np.dstack((noise_image, noise_image, noise_image))
-        # recreated_image = np.resize(recreated_image, (16, 16, 1))
-        # recreated_image *= 255
-        # recreated_image = np.dstack((recreated_image, recreated_image, recreated_image))
-
-        # # orig. image
-        # cv2.imwrite('../generated/targeted/i_' + str(org_class) + '_' +
-        #             str(confirmation_prediction) + '.jpg', original_image)
-        # # final image
-        # cv2.imwrite('../generated/targeted/f_' + str(org_class) + '_' +
-        #             str(confirmation_prediction) + '.jpg', noise_image)
-        # # noise image
-        # cv2.imwrite('../generated/targeted/n_' + str(org_class) + '_' +
-        #             str(confirmation_prediction) + '.jpg', recreated_image)
 
 
 if __name__ == '__main__':
