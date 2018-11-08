@@ -5,7 +5,7 @@ from torch import nn
 from torch.autograd import Variable
 import helper_functions as hf
 import knn
-
+import graph
 
 class FastGradientSignTargeted:
     """
@@ -41,6 +41,7 @@ class FastGradientSignTargeted:
             prep_confirmation_image = hf.preprocess_image(recreated_image)
             confirmation_out = self.model(prep_confirmation_image)
             confirmation_prediction = int(knn.test_knn(confirmation_out.data)[0])
+            graph.graph(confirmation_out.data[0][0], confirmation_out.data[0][1])
             if confirmation_prediction == target_class or i == 99:
                 # print('Original image was predicted as:', org_class,
                 #       'with adversarial noise converted to:', confirmation_prediction)
