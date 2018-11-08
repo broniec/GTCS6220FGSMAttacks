@@ -7,7 +7,7 @@ import torch.autograd as ag
 data = None
 
 
-def retreive_semeion_data(file="../data/semeion.data", generate_images=False):
+def retrieve_semeion_data(file="../../../data/semeion.data", generate_images=False):
     orig_data = np.loadtxt(file)
     data = (orig_data[:, :256]).astype('uint8')
     labels = np.nonzero(orig_data[:, 256:])[1]
@@ -27,10 +27,15 @@ def get_model():
     return torch.load('SemeionCNN98')
 
 
+def load_data():
+    global data
+    data = retrieve_semeion_data()
+
+
 def load_image(index):
     global data
     if data is None:
-        data = retreive_semeion_data()
+        data = retrieve_semeion_data()
     return data[0][index], data[1][index]
 
 
@@ -44,7 +49,3 @@ def preprocess_image(image):
 
 def recreate_image(image):
     return image.clone().detach().numpy()
-
-
-def get_item():
-    pass
