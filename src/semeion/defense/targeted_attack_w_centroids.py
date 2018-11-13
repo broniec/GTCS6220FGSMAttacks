@@ -4,7 +4,7 @@ import torch
 from torch import nn
 from torch.autograd import Variable
 import helper_functions as hf
-import knn
+import centroids
 import graph
 
 
@@ -41,8 +41,8 @@ class FastGradientSignTargeted:
             # Process confirmation image
             prep_confirmation_image = hf.preprocess_image(recreated_image)
             confirmation_out = self.model(prep_confirmation_image)
-            confirmation_prediction = int(knn.test_knn(confirmation_out.data)[0])
-            graph.graph(confirmation_out.data[0][0], confirmation_out.data[0][1])
+            confirmation_prediction = centroids.test(confirmation_out.data)
+            # graph.graph(confirmation_out.data[0][0], confirmation_out.data[0][1])
             if confirmation_prediction == target_class or i == 99:
                 # print('Original image was predicted as:', org_class,
                 #       'with adversarial noise converted to:', confirmation_prediction)
@@ -54,6 +54,6 @@ if __name__ == '__main__':
     o_image, o_class = hf.load_image(0)
     t_class = (o_class + 2) % 10
 
-    knn.train_knn(3)
+    centroids.load()
     fgst = FastGradientSignTargeted(model, 0.02)
     fgst.generate(o_image, o_class, t_class)

@@ -7,8 +7,10 @@ model = None
 
 def _svm_train(data, labels):
     global model
-    model = svm.SVC(kernel='rbf')
+    model = svm.SVC(kernel='sigmoid')
     model.fit(data, labels)
+    y = model.predict(data)
+    print(y)
 
 
 def train_svm():
