@@ -31,8 +31,6 @@ class FastGradientSignTargeted:
             pred_loss = ce_loss(out, im_label_as_var)
             pred_loss.backward()
 
-            prediction = int(svm.test_svm(out.data)[0])
-
             # Create Noise
             # Here, processed_image.grad.data is also the same thing is the backward gradient from
             # the first layer, can use that with hooks as well
@@ -43,7 +41,7 @@ class FastGradientSignTargeted:
             # Process confirmation image
             prep_confirmation_image = hf.preprocess_image(recreated_image)
             confirmation_out = self.model(prep_confirmation_image)
-            confirmation_prediction = int(svm.test_svm(confirmation_out.data)[0])
+            confirmation_prediction = int(svm.test(confirmation_out.data)[0])
             # graph.graph(confirmation_out.data[0][0], confirmation_out.data[0][1])
             if confirmation_prediction == target_class or i == 99:
                 # print('Original image was predicted as:', org_class,
@@ -56,6 +54,6 @@ if __name__ == '__main__':
     o_image, o_class = hf.load_image(0)
     t_class = (o_class + 2) % 10
 
-    svm.train_svm(10)
+    svm.train(10)
     fgst = FastGradientSignTargeted(model, 0.02)
     fgst.generate(o_image, o_class, t_class)

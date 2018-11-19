@@ -51,7 +51,7 @@ def test(model, test_loader):
 
     test_loss /= len(test_loader.dataset)
     percentage = 100. * correct / len(test_loader.dataset)
-    # print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(test_loss, correct, len(test_loader.dataset), percentage))
+    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(test_loss, correct, len(test_loader.dataset), percentage))
     return percentage
 
 
@@ -77,7 +77,7 @@ def run(trogo=64, epochs=300, lr=0.01, linear_layer=15, noise_amount=0.05):
 
     data, labels = mf.retreive_semeion_data()
     randomized = numpy.random.permutation(len(labels))
-    train_cube = torch.FloatTensor(data[randomized][:1280] + numpy.random.normal(0.0, 0.06, data[:1280].shape))
+    train_cube = torch.FloatTensor(data[randomized][:1280] + numpy.random.normal(0.0, noise_amount, data[:1280].shape))
     valid_cube = torch.FloatTensor(data[randomized][1280:1536])
     train_labels = torch.from_numpy(labels[randomized][:1280])
     valid_labels = torch.from_numpy(labels[randomized][1280:1536])
@@ -92,7 +92,7 @@ def run(trogo=64, epochs=300, lr=0.01, linear_layer=15, noise_amount=0.05):
     for epoch in range(1, args.epochs + 1):
         train(args, model, train_loader, optimizer, epoch)
         percent = test(model, test_loader)
-    return percent
+    return model
 
 
 if __name__ == '__main__':

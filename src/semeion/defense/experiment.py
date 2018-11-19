@@ -1,13 +1,11 @@
-import torch
 import sys
-import semeion as s
 import helper_functions as hf
 # import targeted_attack_w_centroids as targeted_attack
 import targeted_attack_w_svm as targeted_attack
 # import centroids
 import svm
 # centroids.load()
-svm.train_svm()
+svm.train()
 
 def run_targeted_experiment(size):
     u_out = open("targeted_experiment_out.txt", "w")

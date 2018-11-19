@@ -7,13 +7,13 @@ model = None
 
 def _svm_train(data, labels):
     global model
-    model = svm.SVC(kernel='sigmoid')
+    model = svm.SVC(kernel='rbf')
     model.fit(data, labels)
     y = model.predict(data)
     print(y)
 
 
-def train_svm():
+def train():
     raw_data = np.loadtxt('cnn_out_weights', dtype=float)
     print(raw_data.size)
     data = np.zeros((raw_data.size, raw_data[0].size - 1))
@@ -23,11 +23,11 @@ def train_svm():
     _svm_train(data, labels)
 
 
-def test_svm(input):
+def test(input):
     global model
     y = model.predict(input)
     return y
 
 
 if __name__ == '__main__':
-    train_svm(10)
+    train(10)

@@ -21,9 +21,8 @@ def run_experiments():
 
 
 def run_experiment(noise):
-    # model = s.run(64, 327, 0.0425, 75, noise)
-    # torch.save(model, 'SemeionCNN98+Noise')
-    return s.run(64, 327, 0.0425, 75, noise)
+    model = s.run(64, 327, 0.0425, 75, noise)
+    torch.save(model, 'SemeionCNN98+Noise')
 
 
 def run_untargeted_experiment():
@@ -62,21 +61,14 @@ def run_targeted_experiment(size):
     u_out.close()
 
 
-# if __name__ == '__main__':
-#     mode = None
-#     if mode == "-u":
-#         run_untargeted_experiment()
-#     elif mode == "-t":
-#         size = -1
-#         if len(sys.argv) > 2:
-#             size = int(sys.argv[2])
-#         run_targeted_experiment(size)
-#     else:
-#         acc = run_experiment(0)
-#         print(acc)
-
 if __name__ == '__main__':
-    for i in range(35):
-        noise = 0.01 * i
-        accuracy = run_experiment(noise)
-        print(noise, accuracy)
+    mode = None
+    if mode == "-u":
+        run_untargeted_experiment()
+    elif mode == "-t":
+        size = -1
+        if len(sys.argv) > 2:
+            size = int(sys.argv[2])
+        run_targeted_experiment(size)
+    else:
+        run_experiment(0.17)
