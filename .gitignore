@@ -113,3 +113,5 @@ src/data/raw/train-images-idx3-ubyte
 src/data/raw/train-labels-idx1-ubyte
 src/results - backup.txt
 src/results2.txt
+src/semeion/results - backup.txt
+src/semeion/results2.txt

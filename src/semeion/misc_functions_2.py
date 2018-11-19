@@ -7,7 +7,7 @@ from torch.autograd import Variable
 from torchvision import models
 
 
-def retreive_semeion_data(file="../data/semeion.data", generate_images=False):
+def retreive_semeion_data(file="../../data/semeion.data", generate_images=False):
     orig_data = np.loadtxt(file)
     data = (orig_data[:, :256]).astype('uint8')
     # data = (orig_data[:, :256]).astype('uint8')
