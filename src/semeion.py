@@ -74,6 +74,7 @@ def run(trogo=64, epochs=300, lr=0.01, linear_layer=15):
     numpy.random.seed(args.seed)
 
     data, labels = mf.retreive_semeion_data()
+    data = data + numpy.random.normal(0.0, 1.0, data.shape)
     randomized = numpy.random.permutation(len(labels))
     train_cube = torch.FloatTensor(data[randomized][:1280])
     valid_cube = torch.FloatTensor(data[randomized][1280:1536])
