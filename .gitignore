@@ -8,7 +8,7 @@ __pycache__/
 
 # PyCharm files
 .idea/
-
+imagenet/src/tiny-imagenet-200/
 # Distribution / packaging
 .Python
 env/

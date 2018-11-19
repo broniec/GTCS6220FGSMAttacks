@@ -5,7 +5,6 @@ import fast_gradient_sign_untargeted as fgsu
 import targeted_attack
 import misc_functions_2 as mf
 from misc_functions import preprocess_image, recreate_image, get_params
-import numpy as np
 import helper_functions as hf
 
 # batch_sizes = [1, 2, 4, 8, 16, 32, 64]
@@ -21,9 +20,11 @@ def run_experiments():
                 s.run(bs, 1000, lr, lls)
 
 
-def run_experiment():
-    model = s.run(64, 327, 0.0425, 75)
-    torch.save(model, 'SemeionCNN98+Noise')
+def run_experiment(noise):
+    # model = s.run(64, 327, 0.0425, 75, noise)
+    # torch.save(model, 'SemeionCNN98+Noise')
+    return s.run(64, 327, 0.0425, 75, noise)
+
 
 def run_untargeted_experiment():
     u_out = open("untargeted_eperiment_out.txt", "w")
@@ -40,6 +41,7 @@ def run_untargeted_experiment():
         pred,iter,conf = FGS_untargeted.generate(original_image, target_class)
         u_out.write("{},{},{},{},{}\n".format(i,target_class,pred,iter,conf))
     u_out.close()
+
 
 def run_targeted_experiment(size):
     u_out = open("targeted_experiment_out.txt", "w")
@@ -60,14 +62,21 @@ def run_targeted_experiment(size):
     u_out.close()
 
 
+# if __name__ == '__main__':
+#     mode = None
+#     if mode == "-u":
+#         run_untargeted_experiment()
+#     elif mode == "-t":
+#         size = -1
+#         if len(sys.argv) > 2:
+#             size = int(sys.argv[2])
+#         run_targeted_experiment(size)
+#     else:
+#         acc = run_experiment(0)
+#         print(acc)
+
 if __name__ == '__main__':
-    mode = sys.argv[1]
-    if mode == "-u":
-        run_untargeted_experiment()
-    elif mode == "-t":
-        size = -1
-        if len(sys.argv) > 2:
-            size = int(sys.argv[2])
-        run_targeted_experiment(size)
-    else:
-        run_experiment()
+    for i in range(35):
+        noise = 0.01 * i
+        accuracy = run_experiment(noise)
+        print(noise, accuracy)
