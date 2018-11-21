@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import torch
 import torch.autograd as ag
+from scipy import ndimage
 
 
 data = None
@@ -39,7 +40,12 @@ def load_image(index):
     return data[0][index], data[1][index]
 
 
+def rem_noise(image):
+    return ndimage.gaussian_filter(image, 0.3)
+
+
 def preprocess_image(image):
+    image = rem_noise(image)
     im_as_ten = torch.from_numpy(image).float()
     im_as_ten.unsqueeze_(0)
     im_as_ten = im_as_ten.view(-1, 1, 16, 16)
