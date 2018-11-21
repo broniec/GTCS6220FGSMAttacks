@@ -25,7 +25,7 @@ def retrieve_semeion_data(file="../../../data/semeion.data", generate_images=Fal
 
 
 def get_model():
-    return torch.load('SemeionCNN98+Noise')
+    return torch.load('SemeionCNN98')
 
 
 def load_data():

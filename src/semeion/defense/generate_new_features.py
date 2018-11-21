@@ -29,7 +29,7 @@ def generate_new_features():
         features = net.run(image)
         x[i][0:10] = np.copy(features)
         x[i][10] = label
-    np.savetxt('cnn_out_weights', x)
+    np.savetxt('cnn_out_weights_w_noise', x)
 
 
 if __name__ == '__main__':
