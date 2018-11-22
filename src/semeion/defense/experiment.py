@@ -7,6 +7,7 @@ import svm
 # centroids.load()
 svm.train()
 
+
 def run_targeted_experiment(size):
     u_out = open("targeted_experiment_out.txt", "w")
     u_out.write("img,original_class,target_class,num_iterations\n")
