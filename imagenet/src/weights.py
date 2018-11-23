@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 import pretrainedmodels as p
 from misc_functions import preprocess_image, recreate_image, get_params
-import svm
 
 
 class GenerateWeights:
