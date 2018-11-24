@@ -1,4 +1,5 @@
 import os
+import time
 import cv2
 import numpy as np
 import torch
@@ -42,6 +43,7 @@ def go_net():
                     counter += 1
                     if counter % 100 == 0:
                         print(counter)
+                        print(time.ctime())
         break
     gw.save('alexnet')
 
