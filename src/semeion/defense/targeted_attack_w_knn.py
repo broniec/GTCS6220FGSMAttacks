@@ -24,7 +24,7 @@ class FastGradientSignTargeted:
         # Process image
         processed_image = hf.preprocess_image(original_image)
         # Start iteration
-        for i in range(100):
+        for i in range(50):
             # print('Iteration:', str(i))
             processed_image.grad = None
             out = self.model(processed_image)
@@ -42,7 +42,7 @@ class FastGradientSignTargeted:
             prep_confirmation_image = hf.preprocess_image(recreated_image)
             confirmation_out = self.model(prep_confirmation_image)
             confirmation_prediction = int(knn.test_knn(confirmation_out.data)[0])
-            graph.graph(confirmation_out.data[0][0], confirmation_out.data[0][1])
+            # graph.graph(confirmation_out.data[0][0], confirmation_out.data[0][1])
             if confirmation_prediction == target_class or i == 99:
                 # print('Original image was predicted as:', org_class,
                 #       'with adversarial noise converted to:', confirmation_prediction)
@@ -52,7 +52,7 @@ class FastGradientSignTargeted:
 if __name__ == '__main__':
     model = hf.get_model()
     o_image, o_class = hf.load_image(0)
-    t_class = (o_class + 2) % 10
+    t_class = (o_class + 1) % 10
 
     knn.train_knn(3)
     fgst = FastGradientSignTargeted(model, 0.02)

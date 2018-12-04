@@ -23,7 +23,7 @@ class FastGradientSignTargeted():
         processed_image = hf.preprocess_image(original_image)
         # Start iteration
         for i in range(100):
-            print('Iteration:', str(i))
+            # print('Iteration:', str(i))
             processed_image.grad = None
             out = self.model(processed_image)
             pred_loss = ce_loss(out, im_label_as_var)
@@ -45,9 +45,9 @@ class FastGradientSignTargeted():
                 nn.functional.softmax(confirmation_out)[0][confirmation_prediction].data.numpy()[0]
             confirmation_prediction = confirmation_prediction.numpy()[0]
             if confirmation_prediction == target_class or i == 99:
-                print('Original image was predicted as:', org_class,
-                      'with adversarial noise converted to:', confirmation_prediction,
-                      'and predicted with confidence of:', confirmation_confidence)
+                # print('Original image was predicted as:', org_class,
+                #       'with adversarial noise converted to:', confirmation_prediction,
+                #       'and predicted with confidence of:', confirmation_confidence)
 
                 # Uncomment to generate noise upon success
                 # noise_image = original_image - recreated_image

@@ -19,7 +19,7 @@ def test(input):
 
 def load():
     global centroids
-    centroids = np.loadtxt('semeion_centroids', dtype=float)
+    centroids = np.loadtxt('semeion_centroids_w_noise', dtype=float)
 
 
 if __name__ == '__main__':

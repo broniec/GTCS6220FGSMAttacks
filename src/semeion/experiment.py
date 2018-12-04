@@ -22,7 +22,7 @@ def run_experiments():
 
 def run_experiment(noise):
     model = s.run(64, 327, 0.0425, 75, noise)
-    torch.save(model, 'SemeionCNN98+Noise')
+    torch.save(model, 'SemeionCNN98+Noise35')
 
 
 def run_untargeted_experiment():
@@ -43,10 +43,10 @@ def run_untargeted_experiment():
 
 
 def run_targeted_experiment(size):
-    u_out = open("targeted_experiment_out.txt", "w")
+    u_out = open("s_noise35.txt", "w")
     u_out.write("img,original_class,target_class,predicted_class,num_iterations,confidence\n")
     data = mf.retreive_semeion_data()
-    model = hf.get_model()
+    model = torch.load('SemeionCNN98+Noise35')
     fgst = targeted_attack.FastGradientSignTargeted(model, 0.02)
 
     if size == -1:
@@ -58,17 +58,18 @@ def run_targeted_experiment(size):
             t_class = j
             p_class, iteration, confidence = fgst.generate(o_image, o_class, j)
             u_out.write("{},{},{},{},{},{}\n".format(i, o_class, t_class, p_class, iteration, confidence))
+            u_out.flush()
     u_out.close()
 
 
 if __name__ == '__main__':
-    mode = None
-    if mode == "-u":
+    mode = '-t'
+    if mode == '-u':
         run_untargeted_experiment()
-    elif mode == "-t":
+    elif mode == '-t':
         size = -1
         if len(sys.argv) > 2:
             size = int(sys.argv[2])
         run_targeted_experiment(size)
     else:
-        run_experiment(0.17)
+        run_experiment(0.35)

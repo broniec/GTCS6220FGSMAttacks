@@ -5,7 +5,7 @@ from torch import nn
 from torch.autograd import Variable
 import helper_functions as hf
 import centroids
-import graph
+# import graph
 
 
 class FastGradientSignTargeted:
@@ -24,7 +24,7 @@ class FastGradientSignTargeted:
         # Process image
         processed_image = hf.preprocess_image(original_image)
         # Start iteration
-        for i in range(100):
+        for i in range(50):
             # print('Iteration:', str(i))
             processed_image.grad = None
             out = self.model(processed_image)
@@ -50,7 +50,7 @@ class FastGradientSignTargeted:
 
 
 if __name__ == '__main__':
-    model = hf.get_model()
+    model = torch.load('CNN98+Noise')
     o_image, o_class = hf.load_image(0)
     t_class = (o_class + 2) % 10
 

@@ -25,7 +25,7 @@ def retrieve_semeion_data(file="../../../data/semeion.data", generate_images=Fal
 
 
 def get_model():
-    return torch.load('SemeionCNN98')
+    return torch.load('SemeionCNN98+Noise')
 
 
 def load_data():
@@ -45,7 +45,7 @@ def rem_noise(image):
 
 
 def preprocess_image(image):
-    image = rem_noise(image)
+    # image = rem_noise(image)
     im_as_ten = torch.from_numpy(image).float()
     im_as_ten.unsqueeze_(0)
     im_as_ten = im_as_ten.view(-1, 1, 16, 16)
@@ -55,3 +55,4 @@ def preprocess_image(image):
 
 def recreate_image(image):
     return image.clone().detach().numpy()
+    # return image

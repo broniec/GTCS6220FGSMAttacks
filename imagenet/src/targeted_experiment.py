@@ -1,5 +1,6 @@
 import os
 import cv2
+import torch
 import pretrainedmodels as p
 import fast_gradient_sign_targeted as fgst
 
@@ -8,7 +9,7 @@ import fast_gradient_sign_targeted as fgst
 def main():
     output = open("resnet152targetedattack.txt", "w")
     output.write("iteration,original_class,target_class,predicted_class,confidence\n")
-    model = p.resnet152(num_classes=1000, pretrained='imagenet')
+    model = torch.load('alexnetNoise')
     attack = fgst.FastGradientSignTargeted(model, 0.01)
     our_path = "tiny-imagenet-200/train/"
 

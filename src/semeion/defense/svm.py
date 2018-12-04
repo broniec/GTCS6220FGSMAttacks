@@ -13,7 +13,7 @@ def _svm_train(data, labels):
 
 
 def train():
-    raw_data = np.loadtxt('cnn_out_weights_w_noise', dtype=float)
+    raw_data = np.loadtxt('cnn_out_weights', dtype=float)
     data = np.zeros((raw_data.size, raw_data[0].size - 1))
     labels = np.zeros(raw_data.size)
     data, labels = np.hsplit(raw_data, [raw_data[0].size - 1])

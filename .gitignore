@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+attack-plot/
+github-version/
+*.bmp
+
 # C extensions
 *.so
 
